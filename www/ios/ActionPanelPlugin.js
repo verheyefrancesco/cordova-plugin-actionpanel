@@ -1,5 +1,5 @@
 /**
-  Phonegap CameraAttachment Plugin
+  Phonegap ActionPanel Plugin
   https://github.com/francescobitmunks/cordova-plugin-cameraattachment
 
   MIT Licensed
@@ -9,22 +9,19 @@ var exec = require('cordova/exec');
 /**
  * Constructor
  */
-function CameraAttachmentPlugin() {
+function ActionPanelPlugin() {
     this._callback;
 }
 
 /**
  * show - true to show the ad, false to hide the ad
  */
-CameraAttachmentPlugin.prototype.show = function(options, cb) {
+ActionPanelPlugin.prototype.show = function(options, cb) {
 
     var defaults = {
-        uploadUrl : 'your_upload_url',
-        cancelButtonText : 'Cancel',
-        usePhotoButtonText : 'Use Photo',
-        retakeButtonText : 'Retake',
-        photoSizeWidth: -1,
-        photoSizeHeight: -1
+        title : 'Actions',
+        actions : [],
+        cancelButtonText : 'Cancel'
     };
 
     for (var key in defaults) {
@@ -35,13 +32,13 @@ CameraAttachmentPlugin.prototype.show = function(options, cb) {
 
     exec(null, 
       null, 
-      "CameraAttachmentPlugin", 
+      "ActionPanelPlugin", 
       "show",
       [defaults]
     );
 };
 
-CameraAttachmentPlugin.prototype._photoUploaded = function(result) {
+ActionPanelPlugin.prototype._actionSelected = function(result) {
     result = result.replace(/&#34;/g, "\'");
 
 
@@ -49,20 +46,20 @@ CameraAttachmentPlugin.prototype._photoUploaded = function(result) {
         this._callback('{\'status\': \'success\', \'data\': \'' + result + '\'}');
 }
 
-CameraAttachmentPlugin.prototype._photoUploadCanceled = function() {
+ActionPanelPlugin.prototype._actionCanceled = function() {
     if (this._callback)
         this._callback('{\'status\': \'cancelled\'}');
 }
 
 
 
-var cameraAttachmentPlugin = new CameraAttachmentPlugin();
-module.exports = cameraAttachmentPlugin;
+var actionPanelPlugin = new ActionPanelPlugin();
+module.exports = actionPanelPlugin;
 
 // Make plugin work under window.plugins
 if (!window.plugins) {
     window.plugins = {};
 }
-if (!window.plugins.cameraAttachmentPlugin) {
-    window.plugins.cameraAttachmentPlugin = cameraAttachmentPlugin;
+if (!window.plugins.actionPanelPlugin) {
+    window.plugins.actionPanelPlugin = actionPanelPlugin;
 }
