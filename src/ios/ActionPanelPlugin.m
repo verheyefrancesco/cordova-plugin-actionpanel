@@ -50,6 +50,10 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     NSString *actionId = [_config actionIdFromActionAtIndex:buttonIndex];
+    if(!actionId)
+    {
+        actionId = @"cancel";
+    }
     [self jsActionSelected:actionId];
 }
 
