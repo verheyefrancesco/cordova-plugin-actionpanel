@@ -1,26 +1,23 @@
 //
-//  CameraAttachmentPlugin.m
-//  CameraAttachmentPlugin
+//  ActionPanelPlugin.m
+//  ActionPanelPlugin
 //
-//  Created by Francesco Verheye on 21/11/14.
+//  Created by Francesco Verheye on 1/12/14.
 //  Copyright (c) 2014 Cheqroom. All rights reserved.
 //
 
-#import "CameraAttachmentPlugin.h"
-#import "CameraAttachmentConfig.h"
+#import "ActionPanelPlugin.h"
 
-@implementation CameraAttachmentPlugin{
-    CameraAttachmentViewController *_cameraAttachmentViewController;
-    CameraAttachmentConfig *_config;
+@implementation ActionPanelPlugin{
 }
 
 - (void)show:(CDVInvokedUrlCommand*)command
 {
     NSMutableDictionary *options = [command argumentAtIndex:0];
     
-    [self createConfigWithOptions:options];
+    //[self createConfigWithOptions:options];
     
-    [self showCameraAttachmentViewController];
+    //[self showCameraAttachmentViewController];
     
     /*
      // B-OFFICE
@@ -42,31 +39,17 @@
     [self.viewController presentViewController:_cameraAttachmentViewController animated:YES completion:nil];
 }
 
-#pragma mark - CameraAttachmentViewControllerDelegate
--(void) cameraAttachmentVC:(CameraAttachmentViewController *)cameraAttachmentVC onClosed:(BOOL)fromCancel andUploadResult:(NSString *)uploadResult
-{
-    if(fromCancel)
-    {
-        [self jsUploadCancelled];
-    }
-    else
-    {
-        [self jsUploadWithResult:uploadResult];
-    }
-    [_cameraAttachmentViewController dismissViewControllerAnimated:YES completion:NULL];
-}
-
 #pragma mark - JS API
 -(void) jsUploadCancelled
 {
-    NSString* jsCallback = @"cameraAttachmentPlugin._photoUploadCanceled();";
+    NSString* jsCallback = @"actionPanelPlugin._actionCanceled();";
     [self.commandDelegate evalJs:jsCallback];
 }
 
 - (void)jsUploadWithResult:(NSString*)result
 {
     result = [result stringByReplacingOccurrencesOfString:@"\"" withString:@"&#34;"];
-    NSString* jsCallback = [NSString stringWithFormat:@"cameraAttachmentPlugin._photoUploaded(\"%@\");", result];
+    NSString* jsCallback = [NSString stringWithFormat:@"actionPanelPlugin._actionSelected(\"%@\");", result];
     [self.commandDelegate evalJs:jsCallback];
 }
 
