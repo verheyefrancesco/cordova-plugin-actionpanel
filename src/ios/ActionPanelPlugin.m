@@ -29,14 +29,14 @@
 
 -(void) createConfigWithOptions:(NSMutableDictionary*)options
 {
-    _config = [[CameraAttachmentConfig alloc] initWithDictionary:options];
+    //_config = [[CameraAttachmentConfig alloc] initWithDictionary:options];
 }
 
 -(void) showCameraAttachmentViewController
 {
-    _cameraAttachmentViewController = [[CameraAttachmentViewController alloc] initWithConfig:_config];
-    _cameraAttachmentViewController.delegate = self;
-    [self.viewController presentViewController:_cameraAttachmentViewController animated:YES completion:nil];
+    //_cameraAttachmentViewController = [[CameraAttachmentViewController alloc] initWithConfig:_config];
+    //_cameraAttachmentViewController.delegate = self;
+    //[self.viewController presentViewController:_cameraAttachmentViewController animated:YES completion:nil];
 }
 
 #pragma mark - JS API
