@@ -12,7 +12,9 @@ function ActionPanelPlugin() {
 ActionPanelPlugin.prototype.show = function(options, cb) {
   
 	var defaults = {
-        title : 'Actions'
+        title: 'Actions',
+        actions: [],
+        cancelButtonText: 'Cancel'
     };
 
 	for (var key in defaults) {
