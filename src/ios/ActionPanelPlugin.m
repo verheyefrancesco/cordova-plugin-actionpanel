@@ -7,49 +7,56 @@
 //
 
 #import "ActionPanelPlugin.h"
+#import "ActionPanelConfig.h"
 
 @implementation ActionPanelPlugin{
+    ActionPanelConfig *_config;
 }
 
 - (void)show:(CDVInvokedUrlCommand*)command
 {
     NSMutableDictionary *options = [command argumentAtIndex:0];
     
-    //[self createConfigWithOptions:options];
+    [self createConfigWithOptions:options];
     
-    //[self showCameraAttachmentViewController];
-    
-    /*
-     // B-OFFICE
-     _uploadUrl = @"http://10.0.1.31:8500/upload/upload";
-     // C-OFFICE
-     _uploadUrl = @"http://192.168.9.108/upload/upload";
-     */
+    [self showActionSheet];
 }
 
 -(void) createConfigWithOptions:(NSMutableDictionary*)options
 {
-    //_config = [[CameraAttachmentConfig alloc] initWithDictionary:options];
+    _config = [[ActionPanelConfig alloc] initWithDictionary:options];
 }
 
--(void) showCameraAttachmentViewController
+-(void) showActionSheet
 {
-    //_cameraAttachmentViewController = [[CameraAttachmentViewController alloc] initWithConfig:_config];
-    //_cameraAttachmentViewController.delegate = self;
-    //[self.viewController presentViewController:_cameraAttachmentViewController animated:YES completion:nil];
+    UIActionSheet* actionSheet = [[UIActionSheet alloc] initWithTitle:_config.title
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:nil];
+
+    NSArray *actionTextArr = [_config actionTextArray];
+    for (NSString *title in actionTextArr)
+    {
+        [actionSheet addButtonWithTitle:title];
+    }
+    
+    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:_config.cancelButtonText];
+    
+    [actionSheet showInView:self.viewController.view];
+}
+
+#pragma mark UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    NSString *actionId = [_config actionIdFromActionAtIndex:buttonIndex];
+    [self jsActionSelected:actionId];
 }
 
 #pragma mark - JS API
--(void) jsUploadCancelled
+-(void) jsActionSelected:(NSString*)actionId
 {
-    NSString* jsCallback = @"actionPanelPlugin._actionCanceled();";
-    [self.commandDelegate evalJs:jsCallback];
-}
-
-- (void)jsUploadWithResult:(NSString*)result
-{
-    result = [result stringByReplacingOccurrencesOfString:@"\"" withString:@"&#34;"];
-    NSString* jsCallback = [NSString stringWithFormat:@"actionPanelPlugin._actionSelected(\"%@\");", result];
+    NSString* jsCallback = [NSString stringWithFormat:@"actionPanelPlugin._actionSelected(\"%@\");", actionId];
     [self.commandDelegate evalJs:jsCallback];
 }
 

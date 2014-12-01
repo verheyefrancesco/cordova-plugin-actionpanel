@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <Cordova/CDV.h>
 
-@interface ActionPanelPlugin : CDVPlugin 
+@interface ActionPanelPlugin : CDVPlugin <UIActionSheetDelegate>
 
 - (void)show:(CDVInvokedUrlCommand*)command;
 

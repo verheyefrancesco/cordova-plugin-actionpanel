@@ -49,6 +49,10 @@
 
 	    <header-file src="src/ios/ActionPanelPlugin.h" />
 	    <source-file src="src/ios/ActionPanelPlugin.m" />
+        <header-file src="src/ios/Action.h" />
+        <source-file src="src/ios/Action.m" />
+        <header-file src="src/ios/ActionPanelConfig.h" />
+        <source-file src="src/ios/ActionPanelConfig.m" />
 
     </platform>
 
