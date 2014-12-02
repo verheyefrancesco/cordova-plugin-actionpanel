@@ -1,4 +1,4 @@
-# CameraAttachment Plugin for Cordova/PhoneGap 3.0 (iOS and Android)
+# ActionPanel Plugin for Cordova/PhoneGap 3.0 (iOS and Android)
 
 
 ## Installation
@@ -8,75 +8,61 @@
 2) Add a plugin to your project using Cordova CLI:
 
 ```bash
-cordova plugin add https://github.com/francescobitmunks/cordova-plugin-cameraattachment
+cordova plugin add https://github.com/francescobitmunks/cordova-plugin-actionpanel
 ```
 Or using PhoneGap CLI:
 
 ```bash
-phonegap local plugin add https://github.com/francescobitmunks/cordova-plugin-cameraattachment
+phonegap local plugin add https://github.com/francescobitmunks/cordova-plugin-actionpanel
 ```
 
 ## Usage
 
 ```js
-var uploadUrl = 'http://10.0.1.4:8500/upload/upload';
-var cancelButtonText = 'Annuleer';
-var usePhotoButtonText = 'Gebruik';
-var retakeButtonText = 'Opnieuw';
-var photoSize = 'medium';
+var title = "Actions";
+
+var actionCall = {id: "call", text: "Call customer"};
+var actionMail = {id: "mail", text: "Mail customer"};
+
+var actions = [actionCall, actionMail];
+
+var cancelButtonText = "Cancel";
             
 var options = {
-    uploadUrl: uploadUrl,
-    cancelButtonText: cancelButtonText,
-    usePhotoButtonText: usePhotoButtonText,
-    retakeButtonText: retakeButtonText,
-    photoSize: photoSize
+    title: title,
+    actions:actions,
+    cancelButtonText: cancelButtonText
 };
 
-cameraAttachmentPlugin.show(options, 
+actionPanelPlugin.show(options, 
     function(result){
         alert("upload result: " + result);  
-});
+    });
+}
 ```
 
 ## Options
 
-### uploadUrl - iOS, Android
-The url to upload the base64 image.
+### title - iOS, Android
+The title label above the Actions.
 
 Type: String
 
-Default: `your_upload_url`
+Default: `Actions`
 
-### cancelButtonText - Android
+### cancelButtonText - iOS, Android
 Label for cancel button.
 
 Type: String
 
 Default: `Cancel`
 
-### usePhotoButtonText - Android
-Label to confirm to use the photo.
+### actions - iOS, Android
+Array for the actions
 
-Type: String
+Type: Array
 
-Default: `Use Photo`
-
-### retakeButtonText - Android
-Label to retake a picture button.
-
-Type: String
-
-Default: `Retake`
-
-### photoSize - iOS, Android
-Size of the picture
-
-Type: String
-
-Default: `medium`
-
-Values: `small` | `medium` | `large`
+Default: `[]`
 
 ## Requirements
 - PhoneGap 3.0 or newer / Cordova 3.0 or newer
@@ -85,22 +71,24 @@ Values: `small` | `medium` | `large`
 ## Example
 
 ```js
-var uploadUrl = 'http://10.0.1.4:8500/upload/upload';
-var cancelButtonText = 'Annuleer';
-var usePhotoButtonText = 'Gebruik';
-var retakeButtonText = 'Opnieuw';
-var photoSize = 'medium';
+var title = "Actions";
+
+var actionCall = {id: "call", text: "Call customer"};
+var actionMail = {id: "mail", text: "Mail customer"};
+
+var actions = [actionCall, actionMail];
+
+var cancelButtonText = "Cancel";
             
 var options = {
-    uploadUrl: uploadUrl,
-    cancelButtonText: cancelButtonText,
-    usePhotoButtonText: usePhotoButtonText,
-    retakeButtonText: retakeButtonText,
-    photoSize: photoSize
+    title: title,
+    actions:actions,
+    cancelButtonText: cancelButtonText
 };
 
-cameraAttachmentPlugin.show(options, 
+actionPanelPlugin.show(options, 
     function(result){
         alert("upload result: " + result);  
-});
+    });
+}
 ```
