@@ -25,13 +25,7 @@
         </js-module>
     
         <source-file src="src/android/ActionPanelPlugin.java" target-dir="src/com/checkroom/plugin/actionpanel" />
-        <source-file src="src/android/ActionPanelDialog.java" target-dir="src/com/checkroom/plugin/actionpanel" />
         <source-file src="src/android/Action.java" target-dir="src/com/checkroom/plugin/actionpanel" />
-        <source-file src="src/android/ActionPanelConfig.java" target-dir="src/com/checkroom/plugin/actionpanel" />
-
-        <source-file src="src/android/res/layout/action_panel_dialog.xml" target-dir="res/layout" />
-        
-        <source-file src="src/android/gen/com/checkroom/plugin/actionpanel/R.java" target-dir="gen/com/checkroom/plugin/actionpanel" />
         
     </platform>
     <!-- ios -->

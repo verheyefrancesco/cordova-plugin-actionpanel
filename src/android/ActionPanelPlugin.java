@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 
 public class ActionPanelPlugin extends CordovaPlugin {
@@ -25,8 +27,6 @@ public class ActionPanelPlugin extends CordovaPlugin {
 	private String mCancelButtonText;
 
 	private CallbackContext callbackContext;
-	private ActionPanelConfig mConfig;
-	private ActionPanelDialog mActionPanelDialog;
 
 	@Override
 	public boolean execute(final String action, final JSONArray data,
@@ -47,12 +47,11 @@ public class ActionPanelPlugin extends CordovaPlugin {
 			final CallbackContext callbackContext) {
 		readParametersFromData(data);
 
-		createConfig();
-
-		showCameraAttachmentDialog();
+		showAlert();
 	}
 
 	private void readParametersFromData(JSONArray data) {
+		mActionsList = new ArrayList<Action>();
 		try {
 			JSONObject obj = data.getJSONObject(0);
 			if (obj.has(ARG_TITLE)) {
@@ -83,22 +82,46 @@ public class ActionPanelPlugin extends CordovaPlugin {
 		}
 	}
 
-	private void createConfig() {
-		mConfig = new ActionPanelConfig(mTitle, mActionsList, mCancelButtonText);
-	}
+	public void showAlert() {
+		AlertDialog.Builder ad = new AlertDialog.Builder(cordova.getActivity());
+		ad.setTitle(mTitle);
 
-	private void showCameraAttachmentDialog() {
-		this.cordova.getActivity().runOnUiThread(new Runnable() {
-			public void run() {
-				mActionPanelDialog = new ActionPanelDialog(cordova
-						.getActivity());
-				mActionPanelDialog.setConfig(mConfig);
-				mActionPanelDialog.show();
+		List<String> actionTextList = new ArrayList<String>();
+		for (Action action : mActionsList) {
+			actionTextList.add(action.getText());
+		}
+		CharSequence[] cs = actionTextList
+				.toArray(new CharSequence[actionTextList.size()]);
+
+		ad.setItems(cs, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int item) {
+				jsActionSelected(item);
 			}
 		});
+		ad.setNegativeButton(mCancelButtonText,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						jsCancelled();
+					}
+				});
+		ad.show();
 	}
-	/*
-	 * String message = "{'status': 'cancelled'}";
-	 * callbackContext.success(message);
-	 */
+
+	/* JS */
+	private void jsActionSelected(int index) {
+		Action selectedAction = mActionsList.get(index);
+		if (selectedAction != null) {
+			String result = "{'status': 'success', 'data': {'id': + '"
+					+ selectedAction.getId() + "', 'text': '"
+					+ selectedAction.getText() + "'}}";
+			callbackContext.success(result);
+		}
+	}
+
+	private void jsCancelled() {
+		String result = "{'status': 'cancelled'}";
+		callbackContext.success(result);
+	}
 }
