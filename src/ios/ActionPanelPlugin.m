@@ -8,6 +8,7 @@
 
 #import "ActionPanelPlugin.h"
 #import "ActionPanelConfig.h"
+#import "Action.h"
 
 @implementation ActionPanelPlugin{
     ActionPanelConfig *_config;
@@ -49,18 +50,29 @@
 #pragma mark UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    NSString *actionId = [_config actionIdFromActionAtIndex:buttonIndex];
-    if(!actionId)
+    Action *action;
+    if(_config.actions.count > buttonIndex)
     {
-        actionId = @"cancel";
+        action = [_config.actions objectAtIndex:buttonIndex];
+        [self jsActionSelected:action];
+    } else{
+        [self jsActionCancelled];
     }
-    [self jsActionSelected:actionId];
 }
 
 #pragma mark - JS API
--(void) jsActionSelected:(NSString*)actionId
+-(void) jsActionSelected:(Action*)action
 {
-    NSString* jsCallback = [NSString stringWithFormat:@"actionPanelPlugin._actionSelected(\"%@\");", actionId];
+    NSString *result = [NSString stringWithFormat:@"{\"id\": \"%@\", \"text\":\"%@\"}", action.Id, action.text];
+    result = [result stringByReplacingOccurrencesOfString:@"\"" withString:@"&#34;"];
+    
+    NSString* jsCallback = [NSString stringWithFormat:@"actionPanelPlugin._actionSelected(\"%@\");", result];
+    [self.commandDelegate evalJs:jsCallback];
+}
+
+-(void) jsActionCancelled
+{
+    NSString* jsCallback = @"actionPanelPlugin._actionCancelled();";
     [self.commandDelegate evalJs:jsCallback];
 }
 

@@ -39,11 +39,15 @@ ActionPanelPlugin.prototype.show = function(options, cb) {
 };
 
 ActionPanelPlugin.prototype._actionSelected = function(result) {
-    //result = result.replace(/&#34;/g, "\'");
-
+    var r = '' + result.replace(/&#34;/g, "\'");
 
     if (this._callback)
-        this._callback('{\'status\': \'success\', \'action\': \'' + result + '\'}');
+        this._callback('{\'status\': \'success\', \'data\': ' + r + '}');
+}
+
+ActionPanelPlugin.prototype._actionCancelled = function() {
+    if (this._callback)
+        this._callback('{\'status\': \'cancelled\'}');
 }
 
 
