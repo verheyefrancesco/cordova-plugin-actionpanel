@@ -36,7 +36,7 @@ var options = {
 
 actionPanelPlugin.show(options, 
     function(result){
-        alert("upload result: " + result);  
+        alert("result " + JSON.stringify(result));   
     });
 }
 ```
@@ -88,7 +88,7 @@ var options = {
 
 actionPanelPlugin.show(options, 
     function(result){
-        alert("upload result: " + result);  
+        alert("result " + JSON.stringify(result));   
     });
 }
 ```

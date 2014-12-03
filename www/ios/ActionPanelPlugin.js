@@ -38,18 +38,16 @@ ActionPanelPlugin.prototype.show = function(options, cb) {
     );
 };
 
-ActionPanelPlugin.prototype._actionSelected = function(result) {
-    var r = '' + result.replace(/&#34;/g, "\'");
-
+ActionPanelPlugin.prototype._actionSelected = function(json) {
+    json = json.replace(/&#34;/g, '"');
     if (this._callback)
-        this._callback('{\'status\': \'success\', \'data\': ' + r + '}');
+        this._callback({status:'success', data: JSON.parse(json)});  
 }
 
 ActionPanelPlugin.prototype._actionCancelled = function() {
     if (this._callback)
-        this._callback('{\'status\': \'cancelled\'}');
+        this._callback({status: 'cancelled'});
 }
-
 
 var actionPanelPlugin = new ActionPanelPlugin();
 module.exports = actionPanelPlugin;

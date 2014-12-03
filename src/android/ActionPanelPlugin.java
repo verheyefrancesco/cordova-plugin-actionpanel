@@ -113,15 +113,20 @@ public class ActionPanelPlugin extends CordovaPlugin {
 	private void jsActionSelected(int index) {
 		Action selectedAction = mActionsList.get(index);
 		if (selectedAction != null) {
-			String result = "{'status': 'success', 'data': {'id': + '"
-					+ selectedAction.getId() + "', 'text': '"
-					+ selectedAction.getText() + "'}}";
+			JSONObject resultObj = new JSONObject();
+			try {
+				resultObj.put("id", selectedAction.getId());
+				resultObj.put("text", selectedAction.getText());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			String result = resultObj.toString();
 			callbackContext.success(result);
 		}
 	}
 
 	private void jsCancelled() {
-		String result = "{'status': 'cancelled'}";
-		callbackContext.success(result);
+		callbackContext.success("cancelled");
 	}
 }

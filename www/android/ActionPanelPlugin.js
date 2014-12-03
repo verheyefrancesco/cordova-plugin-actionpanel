@@ -26,7 +26,13 @@ ActionPanelPlugin.prototype.show = function(options, cb) {
 	//this._callback = cb;
 
 	var callback = function(message) {
-		cb(message);
+		var m = '' + message;
+		if(m == 'cancelled'){
+			cb({status: 'cancelled'});
+		} else{
+			m = m.replace(/&#34;/g, '"');
+			cb({status:'success', data: JSON.parse(m)});
+		}
 	}
   
 	cordova.exec(callback, 
