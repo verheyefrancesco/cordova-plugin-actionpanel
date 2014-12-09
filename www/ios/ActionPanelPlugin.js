@@ -1,9 +1,3 @@
-/**
-  Phonegap ActionPanel Plugin
-  https://github.com/francescobitmunks/cordova-plugin-cameraattachment
-
-  MIT Licensed
-*/
 
 var exec = require('cordova/exec');
 /**
@@ -13,9 +7,6 @@ function ActionPanelPlugin() {
     this._callback;
 }
 
-/**
- * show - true to show the ad, false to hide the ad
- */
 ActionPanelPlugin.prototype.show = function(options, cb) {
 
     var defaults = {
@@ -41,13 +32,14 @@ ActionPanelPlugin.prototype.show = function(options, cb) {
 ActionPanelPlugin.prototype._actionSelected = function(json) {
     json = json.replace(/&#34;/g, '"');
     if (this._callback)
-        this._callback({status:'success', data: JSON.parse(json)});  
+        this._callback({status: 'success', data: JSON.parse(json)});
 }
 
 ActionPanelPlugin.prototype._actionCancelled = function() {
     if (this._callback)
         this._callback({status: 'cancelled'});
 }
+
 
 var actionPanelPlugin = new ActionPanelPlugin();
 module.exports = actionPanelPlugin;

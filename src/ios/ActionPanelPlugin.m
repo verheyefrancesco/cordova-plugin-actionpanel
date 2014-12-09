@@ -12,15 +12,11 @@
 
 @implementation ActionPanelPlugin{
     ActionPanelConfig *_config;
-    NSString *_callbackId;
 }
 
 - (void)show:(CDVInvokedUrlCommand*)command
 {
     NSMutableDictionary *options = [command argumentAtIndex:0];
-    
-    
-    _callbackId = command.callbackId;
     
     [self createConfigWithOptions:options];
     
@@ -67,18 +63,6 @@
 #pragma mark - JS API
 -(void) jsActionSelected:(Action*)action
 {
-    /*
-    NSMutableDictionary *resultDic = [NSMutableDictionary dictionary];
-    [resultDic setValue:action.Id forKey:@"id"];
-    [resultDic setValue:action.text forKey:@"text"];
-    
-    NSError * err;
-    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:resultDic options:0 error:&err];
-    NSString * resultString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-    NSString* jsCallback = [NSString stringWithFormat:@"actionPanelPlugin._actionSelected(%@);", resultString];
-    [self.commandDelegate evalJs:jsCallback];
-     */
     NSMutableDictionary *resultDic = [NSMutableDictionary dictionary];
     [resultDic setValue:action.Id forKey:@"id"];
     [resultDic setValue:action.text forKey:@"text"];
@@ -87,7 +71,6 @@
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:resultDic options:0 error:&err];
     NSString * result = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
-    //NSString *result = [NSString stringWithFormat:@"{\"id\": \"%@\", \"text\":\"%@\"}", action.Id, action.text];
     result = [result stringByReplacingOccurrencesOfString:@"\"" withString:@"&#34;"];
     
     NSString* jsCallback = [NSString stringWithFormat:@"actionPanelPlugin._actionSelected(\"%@\");", result];
