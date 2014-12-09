@@ -45,9 +45,17 @@ public class ActionPanelPlugin extends CordovaPlugin {
 
 	public synchronized void show(final JSONArray data,
 			final CallbackContext callbackContext) {
+
+		setDefaultValues();
 		readParametersFromData(data);
 
 		showAlert();
+	}
+
+	private void setDefaultValues() {
+		mTitle = "Actions";
+		mActionsList = new ArrayList<Action>();
+		mCancelButtonText = "Cancel";
 	}
 
 	private void readParametersFromData(JSONArray data) {
@@ -113,20 +121,34 @@ public class ActionPanelPlugin extends CordovaPlugin {
 	private void jsActionSelected(int index) {
 		Action selectedAction = mActionsList.get(index);
 		if (selectedAction != null) {
-			JSONObject resultObj = new JSONObject();
 			try {
-				resultObj.put("id", selectedAction.getId());
-				resultObj.put("text", selectedAction.getText());
+				JSONObject result = new JSONObject();
+				result.put("status", "success");
+				JSONObject data = new JSONObject();
+				data.put("id", selectedAction.getId());
+				data.put("text", selectedAction.getText());
+				result.put("data", data);
+
+				jsStringFromJSONObject(result);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-
-			String result = resultObj.toString();
-			callbackContext.success(result);
 		}
 	}
 
 	private void jsCancelled() {
-		callbackContext.success("cancelled");
+		try {
+			JSONObject result = new JSONObject();
+			result.put("status", "cancelled");
+
+			jsStringFromJSONObject(result);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void jsStringFromJSONObject(JSONObject result) {
+		String resultString = result.toString().replace("\"", "&#34;");
+		callbackContext.success(resultString);
 	}
 }
