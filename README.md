@@ -1,6 +1,7 @@
 # ActionPanel Plugin for Cordova/PhoneGap 3.0 (iOS and Android)
 
 ![Alt text](/screenshots/Android/1.%20dialog.png?raw=true "Android")
+![Alt text](/screenshots/iOS/1.%20dialog.png?raw=true "iOS")
 
 
 ## Installation
