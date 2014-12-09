@@ -1,0 +1,59 @@
+ActionPanelPlugin
+
+
+Repo:
+https://github.com/francescobitmunks/cordova-plugin-actionpanel
+
+
+
+cordova plugin add https://github.com/francescobitmunks/cordova-plugin-actionpanel
+cordova build
+
+
+HTML Usage:
+
+<button onclick="showActionPanel()">Show actions</button>
+
+
+<script>
+    function showActionPanel() {
+
+        var title = "Actions";
+
+        var actionCall = {id: "call", text: "Call customer"};
+        var actionMail = {id: "mail", text: "Mail customer"};
+
+        var actions = [actionCall, actionMail];
+
+        var cancelButtonText = "Cancel";
+            
+        var options = {
+            title: title,
+            actions:actions,
+            cancelButtonText: cancelButtonText
+        };
+
+        actionPanelPlugin.show(options, 
+            function(result){
+                alert("upload result: " + result);  
+            });
+    }
+</script>
+
+
+
+Build and run from terminal:
+cordova build
+cordova run ios
+cordova run android
+
+
+
+To get the same Dialog (UI) like the screenshots, 
+you need to change the minSdkVersion and the  Theme in the AndroidManifest.xml.
+
+<uses-sdk
+    android:minSdkVersion="15"
+    android:targetSdkVersion="19" />
+
+ android:theme="@android:style/Theme.Holo.Light" // on the Activity
